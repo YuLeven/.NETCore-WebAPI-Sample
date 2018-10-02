@@ -1,0 +1,13 @@
+version: '3'
+volumes:
+  haru-ga-kita-postgresql:
+services:
+  postgres:
+    image: postgres:10-alpine
+    environment:
+      POSTGRES_USER: harugakita
+      password: password
+    ports:
+      - 5432:5432
+    volumes:
+      - haru-ga-kita-postgresql:/var/lib/postgresql/data

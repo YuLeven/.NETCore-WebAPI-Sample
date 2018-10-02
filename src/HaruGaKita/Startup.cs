@@ -10,6 +10,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using HaruGaKita.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
+using HaruGaKita.Infrastructure.Interfaces;
 
 namespace HaruGaKita
 {
@@ -26,6 +29,13 @@ namespace HaruGaKita
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            var connectionString = Configuration.GetConnectionString("HaruGaKitaDB");
+            services.AddEntityFrameworkNpgsql();
+            services.AddDbContext<HaruGaKitaContext>(options =>
+                options.UseNpgsql(connectionString));
+
+            services.AddScoped(typeof(IAsyncRepository<>), typeof(EntityFrameworkRepository<>));
+            services.AddScoped<IUserRepository, UserRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

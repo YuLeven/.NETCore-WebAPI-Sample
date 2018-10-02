@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using HaruGaKita.Entities;
+using HaruGaKita.Infrastructure.Data;
+using HaruGaKita.Infrastructure.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HaruGaKita.Controllers
@@ -10,11 +13,22 @@ namespace HaruGaKita.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
+        private readonly IUserRepository _userRepository;
+
+        public ValuesController(IUserRepository userRepository)
+        {
+            _userRepository = userRepository;
+        }
+
         // GET api/values
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<string>>> Get()
+        public async Task<ActionResult<IEnumerable<User>>> Get()
         {
-            return new string[] { "value1", "value2" };
+            var newUser = new User();
+            newUser.Email = "foo@bar.com";
+
+            await _userRepository.AddAsync(newUser);
+            return await _userRepository.ListAllAsync();
         }
 
         // GET api/values/5
