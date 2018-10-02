@@ -21,7 +21,7 @@ namespace HaruGaKita.Migrations
 
             modelBuilder.Entity("HaruGaKita.Entities.User", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<DateTime>("Created");
@@ -29,6 +29,8 @@ namespace HaruGaKita.Migrations
                     b.Property<string>("Email");
 
                     b.Property<string>("EncryptedPassword");
+
+                    b.Property<Guid>("Uid");
 
                     b.Property<DateTime>("Updated");
 

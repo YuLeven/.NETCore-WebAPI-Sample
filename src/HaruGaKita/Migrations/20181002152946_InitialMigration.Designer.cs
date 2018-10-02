@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HaruGaKita.Migrations
 {
     [DbContext(typeof(HaruGaKitaContext))]
-    [Migration("20181002000715_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20181002152946_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,7 +23,7 @@ namespace HaruGaKita.Migrations
 
             modelBuilder.Entity("HaruGaKita.Entities.User", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<DateTime>("Created");
@@ -31,6 +31,8 @@ namespace HaruGaKita.Migrations
                     b.Property<string>("Email");
 
                     b.Property<string>("EncryptedPassword");
+
+                    b.Property<Guid>("Uid");
 
                     b.Property<DateTime>("Updated");
 

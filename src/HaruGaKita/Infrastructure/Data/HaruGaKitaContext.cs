@@ -17,28 +17,29 @@ namespace HaruGaKita.Infrastructure.Data
 
         public override int SaveChanges()
         {
-            AddTimestamps();
+            PrepareForSaving();
             return base.SaveChanges();
         }
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
-            AddTimestamps();
+            PrepareForSaving();
             return await base.SaveChangesAsync(cancellationToken);
         }
 
-        private void AddTimestamps()
+        private void PrepareForSaving()
         {
             var now = DateTime.UtcNow;
             foreach (var entry in ChangeTracker.Entries())
             {
-                if (entry.Entity is IDatedEntity entity)
+                if (entry.Entity is BaseEntity entity)
                 {
                     switch (entry.State)
                     {
                         case EntityState.Added:
                             entity.Created = now;
                             entity.Updated = now;
+                            entity.Uid = Guid.NewGuid();
                             break;
                         case EntityState.Modified:
                             entity.Updated = now;
