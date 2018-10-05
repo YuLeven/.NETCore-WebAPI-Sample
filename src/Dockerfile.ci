@@ -5,8 +5,8 @@ EXPOSE 44302
 
 FROM microsoft/dotnet:2.1-sdk-alpine AS build
 WORKDIR /src
-COPY HaruGaKita/HaruGaKita.csproj HaruGaKita/
-RUN dotnet restore HaruGaKita/HaruGaKita.csproj
+COPY HaruGaKita.Test/HaruGaKita.Test.csproj HaruGaKita.Test/
+RUN dotnet restore HaruGaKita.Test/HaruGaKita.Test.csproj
 COPY . .
 WORKDIR /src/HaruGaKita.Test
 RUN dotnet build HaruGaKita.Test.csproj -c Release -o /app
