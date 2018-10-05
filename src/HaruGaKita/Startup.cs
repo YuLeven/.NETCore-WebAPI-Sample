@@ -29,7 +29,7 @@ namespace HaruGaKita
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-            var connectionString = Configuration.GetConnectionString("HaruGaKitaDB");
+            var connectionString = Environment.GetEnvironmentVariable("DATABASE_URL");
             services.AddEntityFrameworkNpgsql();
             services.AddDbContext<HaruGaKitaContext>(options =>
                 options.UseNpgsql(connectionString));

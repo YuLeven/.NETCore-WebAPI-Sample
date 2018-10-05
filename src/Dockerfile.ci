@@ -10,3 +10,4 @@ RUN dotnet restore HaruGaKita.Test/HaruGaKita.Test.csproj
 COPY . .
 WORKDIR /src/HaruGaKita.Test
 RUN dotnet build HaruGaKita.Test.csproj -c Release -o /app
+WORKDIR /src

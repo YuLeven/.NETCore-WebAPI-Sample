@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using HaruGaKita.Infrastructure.Data;
 using HaruGaKita.Infrastructure.Interfaces;
@@ -13,7 +14,6 @@ namespace HaruGaKita.Test
         public static string _connectionString { get; }
         static readonly IWebHost _testHost;
         static readonly IConfigurationRoot _configuration;
-        static readonly HaruGaKitaContext _databaseContext;
 
         static DataCase()
         {
@@ -22,7 +22,7 @@ namespace HaruGaKita.Test
                     .SetBasePath(projectDir)
                     .AddJsonFile("appsettings.json")
                     .Build();
-            _connectionString = _configuration.GetConnectionString("HaruGaKitaDB");
+            _connectionString = Environment.GetEnvironmentVariable("DATABASE_URL");
 
             _testHost = new WebHostBuilder()
                 .UseEnvironment("Testing")
@@ -31,17 +31,7 @@ namespace HaruGaKita.Test
                 .UseStartup<Startup>()
                 .Build();
 
-            _databaseContext = _testHost.Services.GetService(typeof(HaruGaKitaContext)) as HaruGaKitaContext;
             _userRepository = _testHost.Services.GetService(typeof(IUserRepository)) as UserRepository;
-            MigrateDatabase();
-        }
-
-        static void MigrateDatabase()
-        {
-            if (_databaseContext.Database.EnsureCreated())
-            {
-                _databaseContext.Database.Migrate();
-            }
         }
     }
 }
