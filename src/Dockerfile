@@ -1,0 +1,13 @@
+FROM microsoft/dotnet:2.1-aspnetcore-runtime-alpine as base
+WORKDIR /app
+EXPOSE 42317
+EXPOSE 44302
+
+FROM microsoft/dotnet:2.1-sdk-alpine AS build
+WORKDIR /src
+COPY HaruGaKita/HaruGaKita.csproj HaruGaKita/
+RUN dotnet restore HaruGaKita/HaruGaKita.csproj
+COPY HaruGaKita.Test/HaruGaKita.Test.csproj HaruGaKita.Test
+COPY . .
+WORKDIR /src/HaruGaKita.Test
+RUN dotnet build HaruGaKita.Test.csproj -c Release -o /app

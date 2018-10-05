@@ -4,21 +4,21 @@ using Xunit;
 
 namespace HaruGaKita.Test.Entities.Serialization
 {
-  public class UserJsonSerializationTest
-  {
-    private readonly User _user;
-
-    public UserJsonSerializationTest()
+    public class UserJsonSerializationTest
     {
-      _user = new User();
-    }
+        private readonly User _user;
 
-    [Fact]
-    public void Serializing_User_Excludes_Sensitive_Fields()
-    {
-      var serializedUser = JsonConvert.SerializeObject(_user);
+        public UserJsonSerializationTest()
+        {
+            _user = new User();
+        }
 
-      Assert.DoesNotContain("EncryptedPassword", serializedUser);
+        [Fact]
+        public void Serializing_User_Excludes_Sensitive_Fields()
+        {
+            var serializedUser = JsonConvert.SerializeObject(_user);
+
+            Assert.DoesNotContain("EncryptedPassword", serializedUser);
+        }
     }
-  }
 }

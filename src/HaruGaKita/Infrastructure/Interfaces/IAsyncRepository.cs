@@ -7,7 +7,7 @@ namespace HaruGaKita.Infrastructure.Interfaces
 {
     public interface IAsyncRepository<T> where T : BaseEntity
     {
-        Task<T> GetByIdAsync(Guid id);
+        Task<T> GetByIdAsync(long id);
         Task<List<T>> ListAllAsync();
         Task<List<T>> ListAsync(ISpecification<T> spec);
         Task<T> AddAsync(T entity);

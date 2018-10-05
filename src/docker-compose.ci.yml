@@ -1,0 +1,19 @@
+version: '3.4'
+volumes:
+  haru-ga-kita-postgresql-ci:
+services:
+  postgres:
+    image: postgres:10-alpine
+    environment:
+      POSTGRES_USER: harugakita
+      password: password
+    ports:
+      - 5432:5432
+    volumes:
+      - haru-ga-kita-postgresql-ci:/var/lib/postgresql/data
+  harugakita:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.ci
+    links:
+      - postgres

@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HaruGaKita", "HaruGaKita\HaruGaKita.csproj", "{76059671-F2EE-4961-812C-DB4E0A51F938}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HaruGaKita", "HaruGaKita\HaruGaKita.csproj", "{76059671-F2EE-4961-812C-DB4E0A51F938}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HaruGaKita.Test", "HaruGaKita.Test\HaruGaKita.Test.csproj", "{3644AFDF-F4F2-4BD2-9B23-0D0736D7A161}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HaruGaKita.Test", "HaruGaKita.Test\HaruGaKita.Test.csproj", "{3644AFDF-F4F2-4BD2-9B23-0D0736D7A161}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,9 +15,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{76059671-F2EE-4961-812C-DB4E0A51F938}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -44,5 +41,11 @@ Global
 		{3644AFDF-F4F2-4BD2-9B23-0D0736D7A161}.Release|x64.Build.0 = Release|Any CPU
 		{3644AFDF-F4F2-4BD2-9B23-0D0736D7A161}.Release|x86.ActiveCfg = Release|Any CPU
 		{3644AFDF-F4F2-4BD2-9B23-0D0736D7A161}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {76360B5C-4E1F-4C46-9D55-A41E29010F50}
 	EndGlobalSection
 EndGlobal

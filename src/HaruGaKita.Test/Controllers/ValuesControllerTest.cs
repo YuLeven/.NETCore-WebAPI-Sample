@@ -12,10 +12,14 @@ namespace HaruGaKita.Test.Controllers
     {
         private ValuesController _controller;
         private Mock<IUserRepository> _mockRepository;
+        private readonly List<User> ExpectedReturn = new List<User>();
 
         public ValuesControllerTest()
         {
+            ExpectedReturn.Add(new User());
             _mockRepository = new Mock<IUserRepository>();
+            _mockRepository.Setup(x => x.ListAllAsync())
+                           .ReturnsAsync(ExpectedReturn);
             _controller = new ValuesController(_mockRepository.Object);
         }
 
@@ -26,6 +30,7 @@ namespace HaruGaKita.Test.Controllers
             var mockUser = new User();
 
             _mockRepository.Verify(x => x.ListAllAsync(), Times.Once);
+            Assert.Equal(result.Value, ExpectedReturn);
         }
     }
 }
