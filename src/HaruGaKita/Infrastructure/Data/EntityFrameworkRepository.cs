@@ -36,6 +36,13 @@ namespace HaruGaKita.Infrastructure.Data
             return await _context.Set<T>().FindAsync(id);
         }
 
+        public async Task<T> GetByGuidAsync(Guid guid)
+        {
+            return await _context.Set<T>()
+                                 .Where(e => e.Uid == guid)
+                                 .FirstOrDefaultAsync();
+        }
+
         public async Task<List<T>> ListAllAsync()
         {
             return await _context.Set<T>().ToListAsync();

@@ -11,10 +11,3 @@ services:
       - 5432:5432
     volumes:
       - haru-ga-kita-postgresql:/var/lib/postgresql/data
-  harugakita:
-    image: ${DOCKER_REGISTRY}harugakita
-    build:
-      context: .
-      dockerfile: HaruGaKita/Dockerfile
-    links:
-      - postgres

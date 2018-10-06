@@ -33,9 +33,13 @@ namespace HaruGaKita.Controllers
 
         // GET api/values/5
         [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
+        public async Task<ActionResult<User>> Get(Guid id)
         {
-            return "value";
+            var user = await _userRepository.GetByGuidAsync(id);
+            if (user == null) { return NotFound(new {
+                error = $"Can't find user with id {id}"
+            }); }
+            return user;
         }
 
         // POST api/values
