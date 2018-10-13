@@ -7,6 +7,7 @@ using HaruGaKita.Infrastructure.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
+#pragma warning disable 1591
 namespace HaruGaKita.Infrastructure.Data
 {
     public class HaruGaKitaContext : DbContext

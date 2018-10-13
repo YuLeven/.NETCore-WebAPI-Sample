@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using HaruGaKita.Entities;
 
+#pragma warning disable 1591
 namespace HaruGaKita.Infrastructure.Interfaces
 {
     public interface IAsyncRepository<T> where T : BaseEntity

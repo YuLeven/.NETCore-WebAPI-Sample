@@ -3,4 +3,4 @@
 cd HaruGaKita
 ASPNETCORE_ENVIRONMENT=Test dotnet ef database update
 cd ../HaruGaKita.Test
-ASPNETCORE_ENVIRONMENT=Test dotnet test
+ASPNETCORE_ENVIRONMENT=Test dotnet watch test 

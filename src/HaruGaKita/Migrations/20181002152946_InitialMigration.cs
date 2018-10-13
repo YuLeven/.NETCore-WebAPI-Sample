@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
+#pragma warning disable 1591
 namespace HaruGaKita.Migrations
 {
     public partial class InitialMigration : Migration

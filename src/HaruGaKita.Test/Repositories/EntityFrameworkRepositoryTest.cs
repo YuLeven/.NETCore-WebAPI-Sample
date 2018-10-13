@@ -2,7 +2,6 @@ using System;
 using HaruGaKita.Entities;
 using HaruGaKita.Test.Support;
 using Xunit;
-using static HaruGaKita.Test.DataCase;
 
 namespace HaruGaKita.Test.Repositories
 {
@@ -10,7 +9,7 @@ namespace HaruGaKita.Test.Repositories
     {
         private readonly User EntityA;
         private readonly User EntityB;
-        public EntityFrameworkRepositoryTest() : base(_connectionString)
+        public EntityFrameworkRepositoryTest() : base()
         {
             EntityA = Factories.UserFactory.Generate();
             EntityB = Factories.UserFactory.Generate();
@@ -19,8 +18,8 @@ namespace HaruGaKita.Test.Repositories
         [Fact]
         public async void GetByIdAsync_Returns_An_Entity_When_A_Matching_Id_Is_Passed()
         {
-            await _userRepository.AddAsync(EntityA);
-            var retrievedUser = await _userRepository.GetByIdAsync(EntityA.Id);
+            await UserRepository.AddAsync(EntityA);
+            var retrievedUser = await UserRepository.GetByIdAsync(EntityA.Id);
 
             Assert.NotNull(retrievedUser);
             Assert.Equal(retrievedUser, EntityA);
@@ -29,8 +28,8 @@ namespace HaruGaKita.Test.Repositories
         [Fact]
         public async void GetByIdAsync_Returns_Null_When_An_Invalid_Id_Is_Passed()
         {
-            await _userRepository.AddAsync(EntityA);
-            var retrievedUser = await _userRepository.GetByIdAsync(-1);
+            await UserRepository.AddAsync(EntityA);
+            var retrievedUser = await UserRepository.GetByIdAsync(-1);
 
             Assert.Null(retrievedUser);
         }
@@ -38,8 +37,8 @@ namespace HaruGaKita.Test.Repositories
         [Fact]
         public async void GetByGuidAsync_Returns_An_Entity_When_A_Matching_Guid_Is_Passed()
         {
-            await _userRepository.AddAsync(EntityB);
-            var retrievedUser = await _userRepository.GetByGuidAsync(EntityB.Uid);
+            await UserRepository.AddAsync(EntityB);
+            var retrievedUser = await UserRepository.GetByGuidAsync(EntityB.Uid);
 
             Assert.NotNull(retrievedUser);
             Assert.Equal(retrievedUser, EntityB);
@@ -48,8 +47,8 @@ namespace HaruGaKita.Test.Repositories
         [Fact]
         public async void GetByGuidAsync_Returns_Null_When_An_Invalid_Guid_Is_Passed()
         {
-            await _userRepository.AddAsync(EntityA);
-            var retrievedUser = await _userRepository.GetByGuidAsync(Guid.NewGuid());
+            await UserRepository.AddAsync(EntityA);
+            var retrievedUser = await UserRepository.GetByGuidAsync(Guid.NewGuid());
 
             Assert.Null(retrievedUser);
         }
@@ -57,11 +56,10 @@ namespace HaruGaKita.Test.Repositories
         [Fact]
         public async void ListAllAsync_Returns_A_List_Of_Entities()
         {
-            await _userRepository.AddAsync(EntityA);
-            await _userRepository.AddAsync(EntityB);
+            await UserRepository.AddAsync(EntityA);
+            await UserRepository.AddAsync(EntityB);
 
-            var retrievedUsers = await _userRepository.ListAllAsync();
-
+            var retrievedUsers = await UserRepository.ListAllAsync();
 
             Assert.Collection(retrievedUsers, item => Assert.Equal(item, EntityA),
                                               item => Assert.Equal(item, EntityB));

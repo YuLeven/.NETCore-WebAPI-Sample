@@ -6,6 +6,7 @@ using HaruGaKita.Entities;
 using HaruGaKita.Infrastructure.Interfaces;
 using System.Linq;
 
+#pragma warning disable 1591
 namespace HaruGaKita.Infrastructure.Data
 {
     public class EntityFrameworkRepository<T> : IAsyncRepository<T> where T : BaseEntity

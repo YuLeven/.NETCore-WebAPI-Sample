@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
+#pragma warning disable 1591
 namespace HaruGaKita.Infrastructure.Interfaces
 {
     public interface ISpecification<T>
