@@ -1,11 +1,11 @@
 using System.Threading.Tasks;
-using HaruGaKita.Exceptions;
+using HaruGaKita.Domain.Exceptions;
 using HaruGaKita.Models;
 using HaruGaKita.Services;
 using Microsoft.AspNetCore.Mvc;
 
 #pragma warning disable 1591
-namespace HaruGaKita.Controllers
+namespace HaruGaKita.WebAPI.Controllers
 {
     [Route("/api/login")]
     [ApiController]

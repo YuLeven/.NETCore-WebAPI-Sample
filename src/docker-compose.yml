@@ -7,11 +7,12 @@ services:
     environment:
       POSTGRES_USER: harugakita
       password: password
-    ports:
-      - 5432:5432
     volumes:
       - haru-ga-kita-postgresql:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
   harugakita:
+    command: dotnet watch run
     build:
       context: .
       dockerfile: ./Dockerfile.dev

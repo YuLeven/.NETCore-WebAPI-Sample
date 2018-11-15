@@ -1,16 +1,11 @@
-﻿using System;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using HaruGaKita.Entities;
-using HaruGaKita.Infrastructure.Interfaces;
-using HaruGaKita.Infrastructure.Data;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.IdentityModel.Tokens.Jwt;
 using HaruGaKita.Services;
+using HaruGaKita.Domain.Entities;
 
 #pragma warning disable 1591
-namespace HaruGaKita.Controllers
+namespace HaruGaKita.WebAPI.Controllers
 {
     [Route("api/me")]
     [ApiController]

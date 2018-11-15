@@ -2,57 +2,58 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using HaruGaKita.Entities;
-using HaruGaKita.Infrastructure.Interfaces;
 using System.Linq;
+using HaruGaKita.Persistence.Interfaces;
+using HaruGaKita.Domain.Entities;
+using HaruGaKita.Persistence;
 
 #pragma warning disable 1591
 namespace HaruGaKita.Infrastructure.Data
 {
     public class EntityFrameworkRepository<T> : IAsyncRepository<T> where T : BaseEntity
     {
-        protected readonly HaruGaKitaContext _context;
+        protected readonly HaruGaKitaDbContext _dbContext;
 
-        public EntityFrameworkRepository(HaruGaKitaContext context)
+        public EntityFrameworkRepository(HaruGaKitaDbContext dbContext)
         {
-            _context = context;
+            _dbContext = dbContext;
         }
 
         public async Task<T> AddAsync(T entity)
         {
-            _context.Set<T>().Add(entity);
-            await _context.SaveChangesAsync();
+            _dbContext.Set<T>().Add(entity);
+            await _dbContext.SaveChangesAsync();
 
             return entity;
         }
 
         public async Task DeleteAsync(T entity)
         {
-            _context.Set<T>().Remove(entity);
-            await _context.SaveChangesAsync();
+            _dbContext.Set<T>().Remove(entity);
+            await _dbContext.SaveChangesAsync();
         }
 
         public async Task<T> GetByIdAsync(long id)
         {
-            return await _context.Set<T>().FindAsync(id);
+            return await _dbContext.Set<T>().FindAsync(id);
         }
 
         public async Task<T> GetByGuidAsync(Guid guid)
         {
-            return await _context.Set<T>()
+            return await _dbContext.Set<T>()
                                  .Where(e => e.Uid == guid)
                                  .FirstOrDefaultAsync();
         }
 
         public async Task<List<T>> ListAllAsync()
         {
-            return await _context.Set<T>().ToListAsync();
+            return await _dbContext.Set<T>().ToListAsync();
         }
 
         public async Task<List<T>> ListAsync(ISpecification<T> spec)
         {
             var queryableResultWithIncludes = spec.Includes
-                .Aggregate(_context.Set<T>().AsQueryable(),
+                .Aggregate(_dbContext.Set<T>().AsQueryable(),
                 (current, include) => current.Include(include));
 
             var secondaryResult = spec.IncludeStrings
@@ -64,8 +65,8 @@ namespace HaruGaKita.Infrastructure.Data
 
         public async Task UpdateAsync(T entity)
         {
-            _context.Entry(entity).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
+            _dbContext.Entry(entity).State = EntityState.Modified;
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

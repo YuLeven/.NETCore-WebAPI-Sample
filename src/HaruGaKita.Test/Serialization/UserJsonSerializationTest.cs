@@ -1,4 +1,4 @@
-using HaruGaKita.Entities;
+using HaruGaKita.Domain.Entities;
 using Newtonsoft.Json;
 using Xunit;
 

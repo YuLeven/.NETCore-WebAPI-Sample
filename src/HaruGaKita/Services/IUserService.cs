@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 using System.Threading.Tasks;
-using HaruGaKita.Entities;
+using HaruGaKita.Domain.Entities;
 
 #pragma warning disable CS1591
 namespace HaruGaKita.Services

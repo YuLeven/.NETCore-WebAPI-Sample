@@ -4,9 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using HaruGaKita.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
-using HaruGaKita.Infrastructure.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Swashbuckle.AspNetCore.Swagger;
 using System.IO;
@@ -19,9 +17,12 @@ using System.Text;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using System.Reflection;
 using Microsoft.IdentityModel.Tokens;
+using HaruGaKita.Persistence;
+using HaruGaKita.Persistence.Interfaces;
+using HaruGaKita.Infrastructure.Data;
 
 #pragma warning disable 1591
-namespace HaruGaKita
+namespace HaruGaKita.WebAPI
 {
     public class Startup
     {
@@ -43,24 +44,23 @@ namespace HaruGaKita
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             var connectionString = Configuration.GetConnectionString("HaruGaKitaDB");
             services.AddEntityFrameworkNpgsql();
-            services.AddDbContext<HaruGaKitaContext>(options =>
+            services.AddDbContext<HaruGaKitaDbContext>(options =>
                 options.UseNpgsql(connectionString));
 
             services.AddScoped(typeof(IAsyncRepository<>), typeof(EntityFrameworkRepository<>));
-            services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserService, UserService>();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
               .AddJwtBearer(options =>
             {
-                options.Authority = HaruGaKita.Configuration.AppAuthority;
-                options.Audience = HaruGaKita.Configuration.ApiAudience;
+                options.Authority = Common.Configuration.AppAuthority;
+                options.Audience = Common.Configuration.ApiAudience;
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
-                    IssuerSigningKey = HaruGaKita.Configuration.ApplicationSecurityKey,
-                    ValidIssuer = HaruGaKita.Configuration.AppAuthority,
+                    IssuerSigningKey = Common.Configuration.ApplicationSecurityKey,
+                    ValidIssuer = Common.Configuration.AppAuthority,
                     ValidateAudience = true,
-                    ValidAudience = HaruGaKita.Configuration.ApiAudience
+                    ValidAudience = Common.Configuration.ApiAudience
                 };
             });
 

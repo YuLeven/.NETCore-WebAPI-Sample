@@ -1,18 +1,16 @@
 using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using HaruGaKita.Entities;
-using HaruGaKita.Infrastructure.Interfaces;
+using HaruGaKita.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 #pragma warning disable 1591
-namespace HaruGaKita.Infrastructure.Data
+namespace HaruGaKita.Persistence
 {
-    public class HaruGaKitaContext : DbContext
+    public class HaruGaKitaDbContext : DbContext
     {
-        public HaruGaKitaContext(DbContextOptions<HaruGaKitaContext> options) : base(options) { }
+        public HaruGaKitaDbContext(DbContextOptions<HaruGaKitaDbContext> options) : base(options) { }
 
         public DbSet<User> Users { get; set; }
 

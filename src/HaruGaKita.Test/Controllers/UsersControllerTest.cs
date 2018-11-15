@@ -1,12 +1,7 @@
 using Xunit;
-using HaruGaKita.Controllers;
-using HaruGaKita.Infrastructure.Interfaces;
-using Moq;
-using HaruGaKita.Entities;
+using HaruGaKita.WebAPI.Controllers;
 using HaruGaKita.Test.Support;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
+using HaruGaKita.Domain.Entities;
 
 namespace HaruGaKita.Test.Controllers
 {
@@ -18,7 +13,7 @@ namespace HaruGaKita.Test.Controllers
         public UsersControllerTest() : base()
         {
             _expectedReturn = Factories.UserFactory.Generate();
-            UserRepository.AddAsync(_expectedReturn).GetAwaiter().GetResult();
+            DbContext.AddAsync(_expectedReturn).GetAwaiter().GetResult();
             _controller = new UsersController(UserService);
             UseAuthenticatedUser(_controller, _expectedReturn);
         }

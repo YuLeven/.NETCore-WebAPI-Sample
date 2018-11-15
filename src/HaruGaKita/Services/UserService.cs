@@ -1,33 +1,32 @@
 using System;
-using HaruGaKita.Entities;
-using HaruGaKita.Exceptions;
-using HaruGaKita.Infrastructure.Interfaces;
 using System.Threading.Tasks;
-using System.Security.Cryptography.X509Certificates;
-using System.IO;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
-using System.Security.Cryptography;
+using HaruGaKita.Domain.Entities;
+using HaruGaKita.Persistence;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
+using HaruGaKita.Domain.Exceptions;
 
 #pragma warning disable CS1591
 namespace HaruGaKita.Services
 {
     public class UserService : IUserService
     {
-        private readonly IUserRepository _userRepository;
-        private static readonly SigningCredentials _signingCredentials = new SigningCredentials(HaruGaKita.Configuration.ApplicationSecurityKey, SecurityAlgorithms.HmacSha256);
+        private readonly HaruGaKitaDbContext _dbContext;
+        private static readonly SigningCredentials _signingCredentials = new SigningCredentials(Common.Configuration.ApplicationSecurityKey, SecurityAlgorithms.HmacSha256);
 
-        public UserService(IUserRepository userRepository)
+        public UserService(HaruGaKitaDbContext dbContext)
         {
-            _userRepository = userRepository;
+            _dbContext = dbContext;
         }
 
         public async Task<User> AuthenticateUser(string email, string password)
         {
-            var user = await _userRepository.GetByEmailAsync(email);
+            var user = await _dbContext.Set<User>().Where(u => u.Email == email).FirstOrDefaultAsync();
 
-            if (user == null || !IsPasswordValid(user, password))
+            if (user == null)
             {
                 throw new UnauthenticatedException("Invalid username or password");
             }
@@ -42,8 +41,8 @@ namespace HaruGaKita.Services
             var handler = new JwtSecurityTokenHandler();
 
             var token = new JwtSecurityToken(
-                issuer: HaruGaKita.Configuration.AppAuthority,
-                audience: HaruGaKita.Configuration.ApiAudience,
+                issuer: Common.Configuration.AppAuthority,
+                audience: Common.Configuration.ApiAudience,
                 claims: claims,
                 expires: DateTime.Now.AddMinutes(30),
                 signingCredentials: _signingCredentials
@@ -54,7 +53,8 @@ namespace HaruGaKita.Services
 
         public async Task<User> GetCurrentUser(ClaimsPrincipal user)
         {
-            return await _userRepository.GetByGuidAsync(Guid.Parse(user.FindFirst(JwtRegisteredClaimNames.Sub)?.Value));
+            var guid = Guid.Parse(user.FindFirst(JwtRegisteredClaimNames.Sub)?.Value);
+            return await _dbContext.Set<User>().Where(u => u.Uid == guid).FirstOrDefaultAsync();
         }
 
         private Claim[] BuildUserClaims(User user)
@@ -64,7 +64,5 @@ namespace HaruGaKita.Services
                 new Claim(JwtRegisteredClaimNames.Sub, user.Uid.ToString())
             };
         }
-
-        private bool IsPasswordValid(User user, string password) => BCrypt.Net.BCrypt.Verify(password, user.EncryptedPassword);
     }
 }

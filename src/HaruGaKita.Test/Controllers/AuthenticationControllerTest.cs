@@ -1,15 +1,12 @@
 using Xunit;
-using HaruGaKita.Controllers;
-using HaruGaKita.Infrastructure.Interfaces;
+using HaruGaKita.WebAPI.Controllers;
 using Moq;
-using HaruGaKita.Entities;
 using HaruGaKita.Test.Support;
-using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using HaruGaKita.Models;
+using HaruGaKita.Domain.Entities;
 
 namespace HaruGaKita.Test.Controllers
 {
@@ -28,7 +25,7 @@ namespace HaruGaKita.Test.Controllers
         public async void Login_Returns_A_Token_When_Valid_Credentials_Are_Given()
         {
             _validUser.EncryptedPassword = "secret";
-            await UserRepository.AddAsync(_validUser);
+            await DbContext.AddAsync(_validUser);
 
             var body = new LoginRequest
             {
@@ -49,7 +46,7 @@ namespace HaruGaKita.Test.Controllers
         public async void Login_Returns_401_When_Invalid_Credentials_Are_Given()
         {
             _validUser.EncryptedPassword = "secret";
-            await UserRepository.AddAsync(_validUser);
+            await DbContext.AddAsync(_validUser);
 
             var body = new LoginRequest
             {

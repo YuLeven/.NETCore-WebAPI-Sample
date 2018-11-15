@@ -2,7 +2,7 @@
 using System;
 using Microsoft.IdentityModel.Tokens;
 
-namespace HaruGaKita
+namespace HaruGaKita.Common
 {
     public static class Configuration
     {
@@ -10,5 +10,6 @@ namespace HaruGaKita
         public static SecurityKey ApplicationSecurityKey = new SymmetricSecurityKey(System.Text.Encoding.ASCII.GetBytes(ApplicationSecret));
         public static string ApiAudience = "api.harugakita.com.br";
         public static string AppAuthority = "harugakita";
+        public static int BCryptWorkFactor = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Test" ? 4 : 10;
     }
 }

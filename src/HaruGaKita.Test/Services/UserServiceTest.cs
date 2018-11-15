@@ -2,9 +2,7 @@ using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
-using HaruGaKita.Entities;
-using HaruGaKita.Exceptions;
-using HaruGaKita.Services;
+using HaruGaKita.Domain.Exceptions;
 using HaruGaKita.Test.Support;
 using Microsoft.IdentityModel.Tokens;
 using Xunit;
@@ -18,7 +16,7 @@ namespace HaruGaKita.Test.Service
         {
             var user = Factories.UserFactory.Generate();
             user.EncryptedPassword = "secret";
-            await UserRepository.AddAsync(user);
+            await DbContext.AddAsync(user);
             var authenticatedUser = await UserService.AuthenticateUser(user.Email, "secret");
 
             Assert.Equal(user, authenticatedUser);
@@ -29,7 +27,7 @@ namespace HaruGaKita.Test.Service
         {
             var user = Factories.UserFactory.Generate();
             user.EncryptedPassword = "secret";
-            await UserRepository.AddAsync(user);
+            await DbContext.AddAsync(user);
 
             await Assert.ThrowsAsync<UnauthenticatedException>(async () =>
              {
@@ -42,7 +40,7 @@ namespace HaruGaKita.Test.Service
         {
             var user = Factories.UserFactory.Generate();
             user.EncryptedPassword = "secret";
-            await UserRepository.AddAsync(user);
+            await DbContext.AddAsync(user);
 
             await Assert.ThrowsAsync<UnauthenticatedException>(async () =>
              {
@@ -55,7 +53,7 @@ namespace HaruGaKita.Test.Service
         {
             var user = Factories.UserFactory.Generate();
             user.EncryptedPassword = "secret";
-            await UserRepository.AddAsync(user);
+            await DbContext.AddAsync(user);
 
             await Assert.ThrowsAsync<UnauthenticatedException>(async () =>
             {
@@ -77,17 +75,17 @@ namespace HaruGaKita.Test.Service
         {
             var user = Factories.UserFactory.Generate();
             user.EncryptedPassword = "secret";
-            await UserRepository.AddAsync(user);
+            await DbContext.AddAsync(user);
 
             var token = await UserService.SignCredentials(user.Email, "secret");
             var tokenHandler = new JwtSecurityTokenHandler();
             var jsonToken = tokenHandler.ReadJwtToken(token);
             var validationParameters = new TokenValidationParameters
             {
-                ValidAudience = HaruGaKita.Configuration.ApiAudience,
-                ValidIssuer = HaruGaKita.Configuration.AppAuthority,
+                ValidAudience = Common.Configuration.ApiAudience,
+                ValidIssuer = Common.Configuration.AppAuthority,
                 ValidateIssuerSigningKey = true,
-                IssuerSigningKey = HaruGaKita.Configuration.ApplicationSecurityKey
+                IssuerSigningKey = Common.Configuration.ApplicationSecurityKey
             };
             SecurityToken validatedToken;
             tokenHandler.ValidateToken(token, validationParameters, out validatedToken);
@@ -106,7 +104,7 @@ namespace HaruGaKita.Test.Service
         public async void GetCurrentUser_Returns_An_User_When_A_Valid_Claim_Is_Passed()
         {
             var user = Factories.UserFactory.Generate();
-            await UserRepository.AddAsync(user);
+            await DbContext.AddAsync(user);
             var claims = new TestPrincipal(new Claim(JwtRegisteredClaimNames.Sub, user.Uid.ToString()));
             var currentUser = await UserService.GetCurrentUser(claims);
 

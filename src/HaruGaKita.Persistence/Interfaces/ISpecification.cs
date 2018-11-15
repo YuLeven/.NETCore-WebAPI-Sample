@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 
 #pragma warning disable 1591
-namespace HaruGaKita.Infrastructure.Interfaces
+namespace HaruGaKita.Persistence.Interfaces
 {
     public interface ISpecification<T>
     {

@@ -1,39 +1,35 @@
 using Microsoft.AspNetCore.Mvc;
-using HaruGaKita.Entities;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
-using HaruGaKita.Infrastructure.Interfaces;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using System.IO;
-using HaruGaKita.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore.Storage;
 using System;
 using HaruGaKita.Services;
+using HaruGaKita.Persistence;
+using HaruGaKita.WebAPI;
+using HaruGaKita.Domain.Entities;
 
 namespace HaruGaKita.Test.Support
 {
     public class IntegrationTest : IDisposable
     {
-        protected HaruGaKitaContext DbContext { get; }
+        protected HaruGaKitaDbContext DbContext { get; }
         protected IDbContextTransaction Transaction { get; }
-        protected IUserRepository UserRepository { get; }
         protected IUserService UserService { get; }
         private readonly IWebHost _testHost;
 
         public IntegrationTest()
         {
             _testHost = new WebHostBuilder()
-                .UseEnvironment("Testing")
+                .UseEnvironment("Test")
                 .UseContentRoot(Configuration.ProjectRoot)
                 .UseConfiguration(Configuration.BuildConfiguration())
                 .UseStartup<Startup>()
                 .Build();
 
-            DbContext = _testHost.Services.GetService(typeof(HaruGaKitaContext)) as HaruGaKitaContext;
-            UserRepository = new UserRepository(DbContext);
-            UserService = new UserService(UserRepository);
+            DbContext = _testHost.Services.GetService(typeof(HaruGaKitaDbContext)) as HaruGaKitaDbContext;
+            UserService = new UserService(DbContext);
 
             Transaction = DbContext.Database.BeginTransaction();
         }

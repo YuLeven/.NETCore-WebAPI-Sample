@@ -1,7 +1,4 @@
-﻿using HaruGaKita.Entities;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using HaruGaKita.Domain.Entities;
 using Xunit;
 
 namespace HaruGaKita.Test.Entities

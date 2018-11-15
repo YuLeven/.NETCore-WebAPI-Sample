@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using HaruGaKita.Entities;
+using HaruGaKita.Domain.Entities;
 
 #pragma warning disable 1591
-namespace HaruGaKita.Infrastructure.Interfaces
+namespace HaruGaKita.Persistence.Interfaces
 {
     public interface IAsyncRepository<T> where T : BaseEntity
     {

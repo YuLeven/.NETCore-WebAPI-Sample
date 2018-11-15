@@ -6,4 +6,5 @@ EXPOSE 44302
 FROM microsoft/dotnet:2.1-sdk-alpine AS build
 WORKDIR /src
 COPY . .
+WORKDIR /src/HaruGaKita
 RUN dotnet restore
