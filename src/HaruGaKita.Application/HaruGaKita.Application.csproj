@@ -5,7 +5,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Accounts\" />
+    <Folder Include="Interfaces\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MediatR" Version="5.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.App" Version="2.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HaruGaKita.Common\HaruGaKita.Common.csproj" />
+    <ProjectReference Include="..\HaruGaKita.Persistence\HaruGaKita.Persistence.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,5 +1,5 @@
 #pragma warning disable 1591
-namespace HaruGaKita.Models
+namespace HaruGaKita.Application.Accounts.Models
 {
     public class OAuthCredentials
     {

@@ -8,7 +8,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Swashbuckle.AspNetCore.Swagger;
 using System.IO;
-using HaruGaKita.Services;
 using Microsoft.AspNetCore.Diagnostics;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Http;
@@ -20,6 +19,7 @@ using Microsoft.IdentityModel.Tokens;
 using HaruGaKita.Persistence;
 using HaruGaKita.Persistence.Interfaces;
 using HaruGaKita.Infrastructure.Data;
+using MediatR;
 
 #pragma warning disable 1591
 namespace HaruGaKita.WebAPI
@@ -48,13 +48,14 @@ namespace HaruGaKita.WebAPI
                 options.UseNpgsql(connectionString));
 
             services.AddScoped(typeof(IAsyncRepository<>), typeof(EntityFrameworkRepository<>));
-            services.AddScoped<IUserService, UserService>();
+            services.AddMediatR();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
               .AddJwtBearer(options =>
             {
                 options.Authority = Common.Configuration.AppAuthority;
                 options.Audience = Common.Configuration.ApiAudience;
+                options.RequireHttpsMetadata = false;
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     IssuerSigningKey = Common.Configuration.ApplicationSecurityKey,

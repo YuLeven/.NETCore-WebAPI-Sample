@@ -5,7 +5,6 @@ using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore.Storage;
 using System;
-using HaruGaKita.Services;
 using HaruGaKita.Persistence;
 using HaruGaKita.WebAPI;
 using HaruGaKita.Domain.Entities;
@@ -16,7 +15,6 @@ namespace HaruGaKita.Test.Support
     {
         protected HaruGaKitaDbContext DbContext { get; }
         protected IDbContextTransaction Transaction { get; }
-        protected IUserService UserService { get; }
         private readonly IWebHost _testHost;
 
         public IntegrationTest()
@@ -29,7 +27,6 @@ namespace HaruGaKita.Test.Support
                 .Build();
 
             DbContext = _testHost.Services.GetService(typeof(HaruGaKitaDbContext)) as HaruGaKitaDbContext;
-            UserService = new UserService(DbContext);
 
             Transaction = DbContext.Database.BeginTransaction();
         }

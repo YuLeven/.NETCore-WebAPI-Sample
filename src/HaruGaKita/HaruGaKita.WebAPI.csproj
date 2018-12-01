@@ -14,6 +14,8 @@
     <DockerTargetOS>Linux</DockerTargetOS>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="MediatR" Version="5.1.0" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="5.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="2.1.2" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.0.1916590" />
@@ -21,7 +23,9 @@
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.3.0" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\HaruGaKita.Application\HaruGaKita.Application.csproj" />
     <ProjectReference Include="..\HaruGaKita.Common\HaruGaKita.Common.csproj" />
+    <ProjectReference Include="..\HaruGaKita.Domain\HaruGaKita.Domain.csproj" />
     <ProjectReference Include="..\HaruGaKita.Persistence\HaruGaKita.Persistence.csproj" />
   </ItemGroup>
 </Project>

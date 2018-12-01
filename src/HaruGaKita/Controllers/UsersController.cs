@@ -1,8 +1,9 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using HaruGaKita.Services;
-using HaruGaKita.Domain.Entities;
+using MediatR;
+using HaruGaKita.Application.Accounts.Queries;
+using HaruGaKita.Application.Accounts.Models;
 
 #pragma warning disable 1591
 namespace HaruGaKita.WebAPI.Controllers
@@ -11,22 +12,22 @@ namespace HaruGaKita.WebAPI.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly IUserService _userService;
+        private readonly IMediator _mediator;
 
-        public UsersController(IUserService userService)
+        public UsersController(IMediator mediator)
         {
-            _userService = userService;
+            _mediator = mediator;
         }
-
 
         /// <summary>
         /// Retrieves the current authenticated user
         /// </summary>
         [HttpGet]
         [Authorize]
-        public async Task<ActionResult<User>> Me()
+        public async Task<ActionResult<UserDto>> Me()
         {
-            return await _userService.GetCurrentUser(User);
+            var query = new MeQuery(User);
+            return await _mediator.Send(query);
         }
     }
 }

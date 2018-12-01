@@ -1,8 +1,9 @@
-using System.Threading.Tasks;
+using HaruGaKita.Application.Accounts.Commands;
+using HaruGaKita.Application.Accounts.Models;
 using HaruGaKita.Domain.Exceptions;
-using HaruGaKita.Models;
-using HaruGaKita.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
+using MediatR;
 
 #pragma warning disable 1591
 namespace HaruGaKita.WebAPI.Controllers
@@ -11,13 +12,14 @@ namespace HaruGaKita.WebAPI.Controllers
     [ApiController]
     public class AuthenticationController : ControllerBase
     {
-        private readonly IUserService _userService;
 
-        public AuthenticationController(IUserService userService)
+        private readonly IMediator _mediator;
+
+        public AuthenticationController(IMediator mediator)
         {
-            _userService = userService;
+            _mediator = mediator;
         }
-
+        
         /// <summary>
         /// Signs-in an user
         /// </summary>
@@ -27,14 +29,11 @@ namespace HaruGaKita.WebAPI.Controllers
         [HttpPost]
         [ProducesResponseType(201)]
         [ProducesResponseType(401)]
-        public async Task<ActionResult<OAuthCredentials>> Login([FromBody] LoginRequest loginRequest)
+        public async Task<ActionResult<OAuthCredentials>> Login([FromBody] LoginCommand loginRequest)
         {
             try
             {
-                return new OAuthCredentials
-                {
-                    Token = await _userService.SignCredentials(loginRequest.Username, loginRequest.Password)
-                };
+                return await _mediator.Send(loginRequest);
             }
             catch (UnauthenticatedException)
             {
