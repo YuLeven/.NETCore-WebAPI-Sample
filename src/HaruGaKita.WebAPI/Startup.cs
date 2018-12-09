@@ -20,6 +20,7 @@ using HaruGaKita.Persistence;
 using HaruGaKita.Persistence.Interfaces;
 using HaruGaKita.Infrastructure.Data;
 using MediatR;
+using HaruGaKita.WebAPI.Error;
 
 #pragma warning disable 1591
 namespace HaruGaKita.WebAPI
@@ -32,6 +33,7 @@ namespace HaruGaKita.WebAPI
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.local.json", optional: true)
                 .AddEnvironmentVariables()
                 .Build();
         }
@@ -41,7 +43,7 @@ namespace HaruGaKita.WebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             var connectionString = Configuration.GetConnectionString("HaruGaKitaDB");
             services.AddEntityFrameworkNpgsql();
             services.AddDbContext<HaruGaKitaDbContext>(options =>
@@ -98,31 +100,9 @@ namespace HaruGaKita.WebAPI
             app.UseAuthentication();
             app.UseExceptionHandler(error =>
             {
-                error.Run(async context =>
-                {
-                    var errorFeature = context.Features.Get<IExceptionHandlerFeature>();
-                    var exception = errorFeature.Error;
-
-                    var problemDetails = new ProblemDetails
-                    {
-                        Instance = $"urn:myorganization:error:{Guid.NewGuid()}",
-                        Detail = exception.Message
-                    };
-
-                    if (exception is BadHttpRequestException badHttpRequestException)
-                    {
-                        problemDetails.Title = "Invalid request";
-                        problemDetails.Status = (int)typeof(BadHttpRequestException).GetProperty("StatusCode",
-                            BindingFlags.NonPublic | BindingFlags.Instance).GetValue(badHttpRequestException);
-                    }
-                    else
-                    {
-                        problemDetails.Title = "An unexpected error occurred!";
-                        problemDetails.Status = 500;
-                    }
-
-                    context.Response.StatusCode = problemDetails.Status.Value;
-                    context.Response.WriteJson(problemDetails, "application/problem+json");
+                error.Run(async context => {
+                    var apiErrorHandler = new ApiErrorHandler(context);
+                    await apiErrorHandler.HandleAsync();
                 });
             });
             app.UseMvc();

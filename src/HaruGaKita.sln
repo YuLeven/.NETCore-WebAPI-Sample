@@ -3,11 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HaruGaKita.WebAPI", "HaruGaKita\HaruGaKita.WebAPI.csproj", "{76059671-F2EE-4961-812C-DB4E0A51F938}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HaruGaKita.WebAPI", "HaruGaKita.WebAPI\HaruGaKita.WebAPI.csproj", "{76059671-F2EE-4961-812C-DB4E0A51F938}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HaruGaKita.Test", "HaruGaKita.Test\HaruGaKita.Test.csproj", "{145BDD9D-7F00-4EDA-8798-DAAF3347D59F}"
-EndProject
-Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{7ECC5906-9806-4EC4-9461-9149911B7DDC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{19A0D21E-D851-4FBF-80B5-57411AB5457D}"
 EndProject

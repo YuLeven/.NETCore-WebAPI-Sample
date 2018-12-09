@@ -1,10 +1,10 @@
-FROM microsoft/dotnet:2.1-aspnetcore-runtime-alpine as base
+FROM microsoft/dotnet:2.2-aspnetcore-runtime-alpine as base
 WORKDIR /app
 EXPOSE 42317
 EXPOSE 44302
 
-FROM microsoft/dotnet:2.1-sdk-alpine AS build
+FROM microsoft/dotnet:2.2-sdk-alpine AS build
 WORKDIR /src
 COPY . .
-WORKDIR /src/HaruGaKita
+WORKDIR /src/HaruGaKita.WebAPI
 RUN dotnet restore

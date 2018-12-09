@@ -8,10 +8,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Security.Claims;
 using HaruGaKita.Domain.Entities;
-using HaruGaKita.Domain.Exceptions;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using MediatR;
+using HaruGaKita.Application.Exceptions;
 
 namespace HaruGaKita.Application.Accounts.Commands
 {

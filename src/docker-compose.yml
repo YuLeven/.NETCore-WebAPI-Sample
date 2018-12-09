@@ -12,6 +12,8 @@ services:
     ports:
       - 5432:5432
   harugakita:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
     command: dotnet watch run
     build:
       context: .
