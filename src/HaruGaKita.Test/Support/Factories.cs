@@ -1,5 +1,5 @@
 using Bogus;
-using HaruGaKita.Entities;
+using HaruGaKita.Domain.Entities;
 
 namespace HaruGaKita.Test.Support
 {

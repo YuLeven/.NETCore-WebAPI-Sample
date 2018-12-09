@@ -1,22 +1,43 @@
 version: '3.4'
 volumes:
   haru-ga-kita-postgresql:
+  application-build-files:
+  common-build-files:
+  domain-build-files:
+  persistence-build-files:
+  test-build-files:
+  webapi-build-files:
 services:
   postgres:
     image: postgres:10-alpine
     environment:
       POSTGRES_USER: harugakita
       password: password
-    ports:
-      - 5432:5432
     volumes:
       - haru-ga-kita-postgresql:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
   harugakita:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    command: dotnet watch run
     build:
       context: .
       dockerfile: ./Dockerfile.dev
     volumes:
       - .:/src
+      - application-build-files:/src/HaruGaKita.Application/bin
+      - application-build-files:/src/HaruGaKita.Application/obj
+      - common-build-files:/src/HaruGaKita.Common/bin
+      - common-build-files:/src/HaruGaKita.Common/obj
+      - domain-build-files:/src/HaruGaKita.Domain/bin
+      - domain-build-files:/src/HaruGaKita.Domain/obj
+      - persistence-build-files:/src/HaruGaKita.Persistence/bin
+      - persistence-build-files:/src/HaruGaKita.Persistence/obj
+      - test-build-files:/src/HaruGaKita.Test/bin
+      - test-build-files:/src/HaruGaKita.Test/obj
+      - webapi-build-files:/src/HaruGaKita.WebAPI/bin
+      - webapi-build-files:/src/HaruGaKita.WebAPI/obj
     links:
       - postgres
     ports:
