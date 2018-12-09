@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HaruGaKita.Application.Accounts.Commands
 {
-    class CreateAccountCommandHandler : IRequestHandler<CreateAccountCommand, UserDto>
+    public class CreateAccountCommandHandler : IRequestHandler<CreateAccountCommand, UserDto>
     {
         private readonly HaruGaKitaDbContext _context;
 

@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\HaruGaKita.WebAPI\HaruGaKita.WebAPI.csproj" />
+    <ProjectReference Include="..\HaruGaKita.Application\HaruGaKita.Application.csproj" />
   </ItemGroup>
 
   <ItemGroup>
