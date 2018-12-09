@@ -28,7 +28,7 @@ namespace HaruGaKita.WebAPI.Error
             };
         }
 
-        public async Task HandleAsync()
+        public void Handle()
         {
             if (_exception is BadHttpRequestException)
             {

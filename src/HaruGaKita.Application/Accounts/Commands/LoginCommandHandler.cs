@@ -27,7 +27,10 @@ namespace HaruGaKita.Application.Accounts.Commands
 
         private async Task<User> AuthenticateUser(string email, string password)
         {
-            var user = await _context.Set<User>().Where(u => u.Email == email).FirstOrDefaultAsync();
+            var user = await _context
+                                .Set<User>()
+                                .Where(u => u.Email == email)
+                                .FirstOrDefaultAsync();
 
             if (user == null)
             {

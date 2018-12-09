@@ -21,6 +21,7 @@ using HaruGaKita.Persistence.Interfaces;
 using HaruGaKita.Infrastructure.Data;
 using MediatR;
 using HaruGaKita.WebAPI.Error;
+using System.Threading.Tasks;
 
 #pragma warning disable 1591
 namespace HaruGaKita.WebAPI
@@ -50,7 +51,7 @@ namespace HaruGaKita.WebAPI
                 options.UseNpgsql(connectionString));
 
             services.AddScoped(typeof(IAsyncRepository<>), typeof(EntityFrameworkRepository<>));
-            services.AddMediatR();
+            services.AddMediatR(typeof(HaruGaKita.Application.Accounts.Commands.CreateAccountCommand).Assembly);
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
               .AddJwtBearer(options =>
@@ -101,8 +102,10 @@ namespace HaruGaKita.WebAPI
             app.UseExceptionHandler(error =>
             {
                 error.Run(async context => {
-                    var apiErrorHandler = new ApiErrorHandler(context);
-                    await apiErrorHandler.HandleAsync();
+                    await Task.Run(() => {
+                        var apiErrorHandler = new ApiErrorHandler(context);
+                        apiErrorHandler.Handle();
+                    });
                 });
             });
             app.UseMvc();

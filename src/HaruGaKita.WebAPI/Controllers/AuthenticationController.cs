@@ -8,17 +8,12 @@ using Microsoft.AspNetCore.Server.Kestrel.Core;
 #pragma warning disable 1591
 namespace HaruGaKita.WebAPI.Controllers
 {
-    [ApiController]
-    public class AuthenticationController : ControllerBase
+    public class AuthenticationController : BaseController
     {
-
-        private readonly IMediator _mediator;
-
-        public AuthenticationController(IMediator mediator)
+        public AuthenticationController(IMediator mediator) : base(mediator)
         {
-            _mediator = mediator;
         }
-        
+
         /// <summary>
         /// Signs-in an user
         /// </summary>
@@ -26,7 +21,6 @@ namespace HaruGaKita.WebAPI.Controllers
         /// <returns code="201">A JWT token</returns>
         /// <returns code="401">If the credentials are invalid</returns>
         [HttpPost]
-        [Route("/api/login")]
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
@@ -35,8 +29,8 @@ namespace HaruGaKita.WebAPI.Controllers
             return await _mediator.Send(loginRequest);
         }
 
+
         [HttpPost]
-        [Route("/api/accounts/new")]
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]
         public async Task<ActionResult<UserDto>> CreateAccount([FromBody] CreateAccountCommand request)

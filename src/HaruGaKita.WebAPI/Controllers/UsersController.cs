@@ -8,15 +8,10 @@ using HaruGaKita.Application.Accounts.Models;
 #pragma warning disable 1591
 namespace HaruGaKita.WebAPI.Controllers
 {
-    [Route("api/me")]
-    [ApiController]
-    public class UsersController : ControllerBase
+    public class UsersController : BaseController
     {
-        private readonly IMediator _mediator;
-
-        public UsersController(IMediator mediator)
+        public UsersController(IMediator mediator) : base(mediator)
         {
-            _mediator = mediator;
         }
 
         /// <summary>
