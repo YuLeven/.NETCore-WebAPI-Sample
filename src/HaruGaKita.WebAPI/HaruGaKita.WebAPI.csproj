@@ -12,6 +12,8 @@
     <DockerTargetOS>Linux</DockerTargetOS>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="8.1.0" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="8.1.0" />
     <PackageReference Include="MediatR" Version="5.1.0" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="5.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />

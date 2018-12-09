@@ -1,4 +1,5 @@
 ﻿using System;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -22,6 +23,7 @@ using HaruGaKita.Infrastructure.Data;
 using MediatR;
 using HaruGaKita.WebAPI.Error;
 using System.Threading.Tasks;
+using HaruGaKita.Application.Accounts.Commands;
 
 #pragma warning disable 1591
 namespace HaruGaKita.WebAPI
@@ -44,14 +46,18 @@ namespace HaruGaKita.WebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             var connectionString = Configuration.GetConnectionString("HaruGaKitaDB");
-            services.AddEntityFrameworkNpgsql();
-            services.AddDbContext<HaruGaKitaDbContext>(options =>
-                options.UseNpgsql(connectionString));
+            services
+                .AddMvc()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreateAccountCommandValidator>());
 
-            services.AddScoped(typeof(IAsyncRepository<>), typeof(EntityFrameworkRepository<>));
-            services.AddMediatR(typeof(HaruGaKita.Application.Accounts.Commands.CreateAccountCommand).Assembly);
+
+            services
+                .AddEntityFrameworkNpgsql()
+                .AddDbContext<HaruGaKitaDbContext>(options => options.UseNpgsql(connectionString))
+                .AddScoped(typeof(IAsyncRepository<>), typeof(EntityFrameworkRepository<>))
+                .AddMediatR(typeof(HaruGaKita.Application.Accounts.Commands.CreateAccountCommand).Assembly);
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
               .AddJwtBearer(options =>
@@ -101,8 +107,10 @@ namespace HaruGaKita.WebAPI
             app.UseAuthentication();
             app.UseExceptionHandler(error =>
             {
-                error.Run(async context => {
-                    await Task.Run(() => {
+                error.Run(async context =>
+                {
+                    await Task.Run(() =>
+                    {
                         var apiErrorHandler = new ApiErrorHandler(context);
                         apiErrorHandler.Handle();
                     });
