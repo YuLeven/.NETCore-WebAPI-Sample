@@ -26,6 +26,9 @@ namespace HaruGaKita.Migrations
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
                 });
+
+            migrationBuilder
+                .CreateIndex("idx_Email_Users", table: "Users", column: "Email", unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
