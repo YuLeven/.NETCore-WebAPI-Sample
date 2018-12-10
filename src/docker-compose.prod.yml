@@ -1,0 +1,12 @@
+version: '3.4'
+services:
+  harugakita:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    volumes:
+      - .:/src
+    ports:
+      - 5000:5000
