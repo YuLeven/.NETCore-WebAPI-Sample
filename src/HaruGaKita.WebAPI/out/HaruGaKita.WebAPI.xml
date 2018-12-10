@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>HaruGaKita.WebAPI</name>
+    </assembly>
+    <members>
+        <member name="M:HaruGaKita.WebAPI.Controllers.AccountsController.Post(HaruGaKita.Application.Accounts.Commands.CreateAccountCommand)">
+            <summary>
+            Creates a new account
+            </summary>
+            <param name="createAccountRequest">Parameters needed for creating anew account</param>
+        </member>
+        <member name="M:HaruGaKita.WebAPI.Controllers.SessionsController.Post(HaruGaKita.Application.Accounts.Commands.LoginCommand)">
+            <summary>
+            Signs-in an user
+            </summary>
+            <param name="loginRequest">Houses the username and password request</param>
+        </member>
+        <member name="M:HaruGaKita.WebAPI.Controllers.UsersController.Me">
+            <summary>
+            Retrieves the current authenticated user
+            </summary>
+        </member>
+    </members>
+</doc>
