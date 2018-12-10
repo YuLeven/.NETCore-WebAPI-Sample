@@ -19,6 +19,7 @@ namespace HaruGaKita.WebAPI.Controllers
         /// </summary>
         [HttpGet]
         [Authorize]
+        [Route("me")]
         public async Task<ActionResult<UserDto>> Me()
         {
             var query = new MeQuery(User);
