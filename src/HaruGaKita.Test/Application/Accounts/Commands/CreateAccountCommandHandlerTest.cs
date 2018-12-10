@@ -7,6 +7,7 @@ using HaruGaKita.Application.Accounts.Models;
 using HaruGaKita.Domain.Entities;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using Npgsql;
 
 namespace HaruGaKita.Test.Application.Accounts.Commands
 {
@@ -25,7 +26,7 @@ namespace HaruGaKita.Test.Application.Accounts.Commands
 
             var result = await handler.Handle(request, CancellationToken.None);
 
-            Assert.IsType(typeof(UserDto), result);
+            Assert.True(result is UserDto);
             Assert.Equal("yurileven@gmail.com", result.Email);
 
             var createdEntry = await DbContext

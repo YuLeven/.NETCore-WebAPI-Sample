@@ -2,11 +2,14 @@ using System;
 using System.Reflection;
 using System.Threading.Tasks;
 using HaruGaKita.Application.Exceptions;
+using HaruGaKita.Common.Postgres;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using Npgsql;
 
 #pragma warning disable 1591
 namespace HaruGaKita.WebAPI.Error
@@ -34,6 +37,10 @@ namespace HaruGaKita.WebAPI.Error
             {
                 HandleBadRequest();
             }
+            else if (_exception is DbUpdateException)
+            {
+                HandleSLQFailure();
+            }
             else if (_exception is UnauthenticatedException)
             {
                 HandleUnauthentictedUser();
@@ -46,6 +53,27 @@ namespace HaruGaKita.WebAPI.Error
 
             _context.Response.StatusCode = _problemDetails.Status.Value;
             _context.Response.WriteJson(_problemDetails);
+        }
+
+        private void HandleSLQFailure()
+        {
+            if (_exception.InnerException is PostgresException)
+            {
+                var innerException = (PostgresException)_exception.InnerException;
+                switch (innerException.SqlState)
+                {
+                    case "23505":
+                        _problemDetails.Status = 400;
+                        _problemDetails.Title = "Uniqueness violation";
+                        _problemDetails.Detail = new SqlErrorMessageFormatter(innerException.Detail).Format();
+                        break;
+                    default:
+                        _problemDetails.Status = 500;
+                        _problemDetails.Title = "Database problem";
+                        _problemDetails.Detail = "The database rejected the requeste changes";
+                        break;
+                }
+            }
         }
 
         private void HandleBadRequest()
